@@ -7,5 +7,9 @@ Route::get('/', function () {
 });
 
 Route::get('/h', function () {
-    return ('Hello World');
+    return ('Hello Worldkk');
+});
+
+Route::get('/h', function () {
+    return ('test Worldkk');
 });
