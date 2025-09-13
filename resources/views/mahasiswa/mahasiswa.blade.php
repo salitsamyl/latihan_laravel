@@ -7,9 +7,9 @@
     <h1>Tambah Mahasiswa</h1>
     <form method="POST" action="/mahasiswa">
         @csrf
-        <input type="text" name="nama" placeholder="Nama"><br>
-        <input type="text" name="nim" placeholder="NIM"><br>
-        <input type="text" name="jurusan" placeholder="Jurusan"><br>
+        <input type="text" name="nama" placeholder="Nama"><br><br>
+        <input type="text" name="nim" placeholder="NIM"><br><br>
+        <input type="text" name="jurusan" placeholder="Jurusan"><br><br>
         <button type="submit">Simpan</button>
     </form>
 
