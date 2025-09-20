@@ -1,18 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\MatkulController;
-use App\Http\Controllers\RuanganController;
-use App\Models\Mahasiswa;
-use App\Models\Matkul;
-use App\Models\Ruangan;
 
-Route::get('/mahasiswa', [MahasiswaController::class,'index']);
-Route::post('/mahasiswa', [MahasiswaController::class,'store']);
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Route::get('/matakuliah', [MatkulController::class,'index']);
-Route::post('/matakuliah', [MatkulController::class,'store']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/ruangan', [RuanganController::class,'index']);
-Route::post('/ruangan', [RuanganController::class,'store']);
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
