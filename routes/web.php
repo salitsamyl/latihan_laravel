@@ -49,9 +49,9 @@ Route::middleware('auth')->group(function () {
     //Dosen
     Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
     Route::post('/dosen', [DosenController::class, 'store'])->name('dosen.store');
-    Route::get('/dosen/{id}/edit', [MahasiswaController::class, 'edit'])->name('dosen.edit');
-    Route::put('/dosen/{id}', [MahasiswaController::class, 'update'])->name('dosen.update');
-    Route::delete('/dosen/{id}', [MahasiswaController::class, 'destroy'])->name('dosen.destroy');
+    Route::get('/dosen/{id}/edit', [DosenController::class, 'edit'])->name('dosen.edit');
+    Route::put('/dosen/{id}', [DosenController::class, 'update'])->name('dosen.update');
+    Route::delete('/dosen/{id}', [DosenController::class, 'destroy'])->name('dosen.destroy');
     
 });
 
