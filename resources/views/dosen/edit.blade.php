@@ -25,7 +25,17 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-gray-700 dark:text-gray-300">Jurusan</label>
+                    <label class="block text-gray-700 dark:text-gray-300">Matakuliah</label>
+                    <select name="matkul_id" class="border-gray-300 rounded-md w-full text-black">
+                        <option value="" class="text-black" disabled>-- Pilih Matakuliah --</option>
+                        @foreach ($matkul as $m)
+                        <option value="{{$m->id}}" {{$dosen->matkul_id == $m->id ? 'selected' : ''}} class="text-black">{{$m->matkul}}</option>                 
+                        @endforeach
+                    </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-700 dark:text-gray-300">Alamat</label>
                         <input type="text" name="alamat" value="{{ old('alamat', $dosen->alamat) }}"
                             class="border rounded w-full px-3 py-2">
                     </div>

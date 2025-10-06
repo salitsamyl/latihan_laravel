@@ -13,6 +13,18 @@ class Mahasiswa extends Model
         'nama',
         'nim',
         'jurusan',
+        'kelas_id',
+        'jurusan_id'
     ];
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class);
+    }
     
 }

@@ -5,6 +5,21 @@
         </h2>
     </x-slot>
 
+    @if (session('alert'))
+    <div x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3000)"
+        x-transition
+        class="p-2 rounded mb-2
+        @if(session('type') == 'success') bg-green-100 text-green-700
+        @elseif(session('type') == 'danger') bg-red-100 text-red-700
+        @endif">
+        {{ session('alert') }}
+    </div>
+    
+    @endif
+
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Form Tambah Mahasiswa -->
@@ -18,9 +33,23 @@
 
             <input type="text" name="nim" placeholder="NIM"
                 class="border-gray-300 rounded-md w-full text-black">
+                @error('nim')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            
+            <select name="kelas_id" class="border-gray-300 rounded-md w-full text-gray-500">
+                <option value="" class="text-black">-- Pilih Kelas --</option>
+                @foreach ($kelas as $kls)
+                <option value="{{$kls->id}}" class="text-black">{{$kls->nm_kelas}}</option>                 
+                @endforeach
+            </select>
 
-            <input type="text" name="jurusan" placeholder="Jurusan"
-                class="border-gray-300 rounded-md w-full text-black">
+            <select name="jurusan_id" class="border-gray-300 rounded-md w-full text-gray-500">
+                <option value="" class="text-black">-- Pilih Jurusan --</option>
+                @foreach ($jurusan as $j)
+                <option value="{{$j->id}}" class="text-black">{{$j->jurusan}}</option>                 
+                @endforeach
+            </select>
 
             <button type="submit"
                 class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-700 text-align-right">
@@ -41,6 +70,7 @@
                                 <th class="px-4 py-2 w-16 text-center">No</th>
                                 <th class="px-4 py-2">Nama</th>
                                 <th class="px-4 py-2">NIM</th>
+                                <th class="px-4 py-2">Kelas</th>
                                 <th class="px-4 py-2">Jurusan</th>
                                 <th class="px-4 py-2 w-40 text-center">Aksi</th>
                             </tr>
@@ -51,7 +81,8 @@
                             <td class="border px-4 py-2 text-center">{{ $loop->iteration }}</td>
                             <td class="border px-4 py-2">{{ $mhs->nama }}</td>
                             <td class="border px-4 py-2 text-center">{{ $mhs->nim }}</td>
-                            <td class="border px-4 py-2 text-center">{{ $mhs->jurusan }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $mhs->kelas->nm_kelas ?? '-' }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $mhs->jurusan->jurusan ?? '-' }}</td>
                             <td class="border px-4 py-2 text-center">
                                 <a href="{{ route('mahasiswa.edit', $mhs->id) }}"
                                     class="inline-block px-3 py-1 bg-yellow-500 text-white rounded">Edit</a>

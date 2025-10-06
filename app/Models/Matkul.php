@@ -13,4 +13,9 @@ class Matkul extends Model
         'matkul',
         'deskripsi'
     ];
+
+    public function dosen()
+    {
+        return $this->hasMany(Dosen::class);
+    }
 }
