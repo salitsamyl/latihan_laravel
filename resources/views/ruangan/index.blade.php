@@ -5,6 +5,20 @@
         </h2>
     </x-slot>
 
+    @if (session('alert'))
+    <div x-data="{ show: true }"
+        x-show="show"
+        x-init="setTimeout(() => show = false, 3000)"
+        x-transition
+        class="p-2 rounded mb-2
+        @if(session('type') == 'success') bg-green-100 text-green-700
+        @elseif(session('type') == 'danger') bg-red-100 text-red-700
+        @endif">
+        {{ session('alert') }}
+    </div>
+    
+    @endif
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Form Tambah Mahasiswa -->

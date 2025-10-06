@@ -32,19 +32,19 @@ Route::middleware('auth')->group(function () {
     Route::put('/mahasiswa/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
     Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
 
+     //Matkul
+    Route::get('/matkul', [MatkulController::class, 'index'])->name('matkul.index');
+    Route::post('/matkul', [MatkulController::class, 'store'])->name('matkul.store');
+    Route::get('/matkul/{id}/edit', [MatkulController::class, 'edit'])->name('matkul.edit');
+    Route::put('/matkul/{id}', [MatkulController::class, 'update'])->name('matkul.update');
+    Route::delete('/matkul/{id}', [MatkulController::class, 'destroy'])->name('matkul.destroy');
+
     //Ruangan
     Route::get('/ruangan', [RuanganController::class, 'index'])->name('ruangan.index');
     Route::post('/ruangan', [RuanganController::class, 'store'])->name('ruangan.store');
     Route::get('/ruangan/{id}/edit', [RuanganController::class, 'edit'])->name('ruangan.edit');
     Route::put('/ruangan/{id}', [RuanganController::class, 'update'])->name('ruangan.update');
     Route::delete('/ruangan/{id}', [RuanganController::class, 'destroy'])->name('ruangan.destroy');
-
-    //Matkul
-    Route::get('/matkul', [MatkulController::class, 'index'])->name('matkul.index');
-    Route::post('/matkul', [MatkulController::class, 'store'])->name('matkul.store');
-    Route::get('/matkul/{id}/edit', [MatkulController::class, 'edit'])->name('matkul.edit');
-    Route::put('/matkul/{id}', [MatkulController::class, 'update'])->name('matkul.update');
-    Route::delete('/matkul/{id}', [MatkulController::class, 'destroy'])->name('matkul.destroy');
 
     //Dosen
     Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');

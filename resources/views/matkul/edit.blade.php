@@ -13,14 +13,14 @@
                     @method('PUT')
 
                     <div class="mb-4">
-                        <label class="block text-gray-700 dark:text-gray-300">Nama</label>
+                        <label class="block text-gray-700 dark:text-gray-300">Matakuliah</label>
                         <input type="text" name="matkul" value="{{ old('matkul', $matkul->matkul) }}"
                             class="border rounded w-full px-3 py-2">
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-gray-700 dark:text-gray-300">NIM</label>
-                        <input type="text" name="kapasitas" value="{{ old('kapasitas', $matkul->kapasitas) }}"
+                        <label class="block text-gray-700 dark:text-gray-300">Deskripsi</label>
+                        <input type="text" name="deskripsi" value="{{ old('kdeskripsi', $matkul->deskripsi) }}"
                             class="border rounded w-full px-3 py-2">
                     </div>
 

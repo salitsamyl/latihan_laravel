@@ -14,7 +14,8 @@ class MatkulController extends Controller
 
     public function store(Request $request){
         Matkul::create($request->only('matkul','deskripsi'));
-        return redirect()->back();
+        
+        return redirect()->back()->with(['alert'=> 'Data matakuliah berhasil ditambahkan','type'=>'success']);
     }
 
     //Edit
@@ -35,7 +36,7 @@ class MatkulController extends Controller
         $matkul = Matkul::findOrfail($id);
         $matkul->update($request->only('matkul','deskripsi'));
 
-        return redirect()->route('matkul.index')->with('success', 'Data diupdate!');
+        return redirect()->route('matkul.index')->with(['alert' => 'Data diupdate!', 'type' => 'success']);
     }
 
     //Delete
@@ -44,6 +45,6 @@ class MatkulController extends Controller
         $matkul = Matkul::findOrfail($id);
         $matkul->delete();
 
-        return redirect()->route('matkul.index')->with('success', 'Data berhasil dihapus!');
+        return redirect()->route('matkul.index')->with(['alert' => 'Data berhasil dihapus!', 'type' => 'danger']);
     }
 }
