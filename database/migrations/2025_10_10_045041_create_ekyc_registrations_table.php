@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('file_ktp')->nullable();
             $table->string('file_ijazah')->nullable();
             $table->string('file_selfie')->nullable();
+            $table->string('file_kk')->nullable();
             $table->enum('status', ['draft', 'submitted'])->default('draft');
             $table->timestamps();
 

@@ -28,7 +28,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        //redirect berdasarkan role
+        if ($user->role === 'admin') {
+            return redirect()->route('dashboard');
+        }
+
+        // default halaman user
+        return redirect()->route('ekyc.step1');
     }
 
     /**

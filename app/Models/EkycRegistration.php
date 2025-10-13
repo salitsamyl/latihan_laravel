@@ -16,6 +16,9 @@ class EkycRegistration extends Model
         'file_kk',
         'file_ijazah',
         'file_selfie',
+        'asal_sd',
+        'asal_smp',
+        'asal_sma'
     ];
 
     // Relasi ke tabel users

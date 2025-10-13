@@ -21,17 +21,17 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">Email</label>
+                <label class="block text-sm font-medium mb-1 text-white">Email</label>
                 <input type="email" name="email" class="w-full border-gray-300 rounded-md p-2 focus:ring focus:ring-blue-200" required>
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium mb-1">Password</label>
+                <label class="block text-sm font-medium mb-1 text-white">Password</label>
                 <input type="password" name="password" class="w-full border-gray-300 rounded-md p-2 focus:ring focus:ring-blue-200" required>
             </div>
 
             <div class="mb-6">
-                <label class="block text-sm font-medium mb-1">Konfirmasi Password</label>
+                <label class="block text-sm font-medium mb-1 text-white">Konfirmasi Password</label>
                 <input type="password" name="password_confirmation" class="w-full border-gray-300 rounded-md p-2 focus:ring focus:ring-blue-200" required>
             </div>
 
@@ -39,9 +39,9 @@
                 Daftar Sekarang
             </button>
 
-            <p class="text-center text-sm mt-4">
+            <p class="text-center text-sm mt-4 text-white">
                 Sudah punya akun?
-                <a href="{{ route('login') }}" class="text-blue-600 hover:underline">Login di sini</a>
+                <a href="{{ route('login') }}" class="text-blue-600 hover:underline ">Login di sini</a>
             </p>
         </form>
     </div>
