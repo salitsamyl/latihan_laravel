@@ -25,19 +25,26 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
         $user = Auth::user();
 
-        //redirect berdasarkan role
+        // Redirect berdasarkan role
         if ($user->role === 'admin') {
             return redirect()->route('dashboard');
         }
 
-        // default halaman user
-        return redirect()->route('ekyc.step1');
+        // Ambil data eKYC milik user yang login
+        $ekyc = \App\Models\EkycRegistration::where('user_id',Auth::user())->first();
+
+        if ($ekyc && $ekyc->status === 'submitted') {
+            // Jika eKYC sudah selesai
+            return redirect()->route('ekyc.step5');
+        } else {
+            // Jika belum ada atau belum selesai
+            return redirect()->route('ekyc.step1');
     }
+}
 
     /**
      * Destroy an authenticated session.

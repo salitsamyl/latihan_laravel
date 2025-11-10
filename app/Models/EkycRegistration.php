@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class EkycRegistration extends Model
 {
     protected $fillable = [
@@ -18,7 +19,7 @@ class EkycRegistration extends Model
         'file_selfie',
         'asal_sd',
         'asal_smp',
-        'asal_sma'
+        'asal_sma',
     ];
 
     // Relasi ke tabel users
@@ -27,3 +28,6 @@ class EkycRegistration extends Model
         return $this->belongsTo(User::class);
     }
 }
+
+?>
+

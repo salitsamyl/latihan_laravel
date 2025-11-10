@@ -6,6 +6,7 @@ use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\RuanganController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\Auth\StudentRegisterController;
+use App\Http\Controllers\Admin\EkycAdminController;
 use App\Http\Controllers\EkycController;
 use App\Models\Dosen;
 use App\Models\Mahasiswa;
@@ -13,14 +14,24 @@ use App\Models\Matkul;
 use App\Models\Ruangan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', function (Request $request) {
+        $user = $request->user();
+
+        if ($user->role === 'admin') {
+            return view('dashboard.admin'); 
+        } else {
+            return view('dashboard.user');
+        }
+    })->name('dashboard');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,6 +44,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/mahasiswa/{id}/edit', [MahasiswaController::class, 'edit'])->name('mahasiswa.edit');
     Route::put('/mahasiswa/{id}', [MahasiswaController::class, 'update'])->name('mahasiswa.update');
     Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy'])->name('mahasiswa.destroy');
+
+    Route::resource('ruangan', RuanganController::class)->middleware(['auth']);
+    Route::resource('matkul', MatkulController::class)->middleware(['auth']);
+    Route::resource('dosen', DosenController::class)->middleware(['auth']);
+
+    Route::prefix('admin')->group(function () {
+    Route::get('/ekyc', [EkycAdminController::class, 'index'])->name('admin.ekyc.index');
+    Route::get('/ekyc/{id}', [EkycAdminController::class, 'show'])->name('admin.ekyc.show');
+    Route::put('/ekyc/{id}/verify', [EkycAdminController::class, 'verify'])->name('admin.ekyc.verify');
+    // atau Route::patch('/ekyc/{id}/verify', ...)
+    });
 
      //Matkul
     Route::get('/matkul', [MatkulController::class, 'index'])->name('matkul.index');
@@ -71,10 +93,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/ekyc/step2', [EkycController::class, 'step2'])->name('ekyc.step2');
     Route::post('/ekyc/step2', [EkycController::class,'storeStep2'])->name('ekyc.step2.store');
 
-// EKYC step3
+    
+ // EKYC step3
     Route::get('/ekyc/step3', [EkycController::class, 'showStep3'])->name('ekyc.step3');
     Route::post('/ekyc/step3', [EkycController::class,'storeStep3'])->name('ekyc.step3.store');
 
+ // EKYC step3
+    Route::get('/ekyc/step4', [EkycController::class, 'showStep4'])->name('ekyc.step4');
+    Route::post('/ekyc/step4', [EkycController::class,'storeStep4'])->name('ekyc.step4.store');
+
+ // EKYC step 5
+    Route::get('/ekyc/step5', [EkycController::class, 'step5'])->name('ekyc.step5');
 
 });
 

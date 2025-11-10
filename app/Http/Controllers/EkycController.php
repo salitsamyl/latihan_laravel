@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EkycRegistration;
+use App\Models\MasterAlamat;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+
 
 class EkycController extends Controller
 {
@@ -12,7 +16,7 @@ class EkycController extends Controller
     {
         // Ambil data draft user jika sudan ada
         $ekyc = EkycRegistration::where('user_id', Auth::id())
-            ->where('status', 'draft')
+            //->where('status', 'draft')
             ->first();
 
         // Simpan session agar bisa lanjut ke step berikutnya
@@ -25,6 +29,11 @@ class EkycController extends Controller
 
     public function storeStep1(Request $request)
     {
+        $ekyc = EkycRegistration::where('user_id', Auth::id())->first();
+        // redirect tanpa simpan & update
+        if ($ekyc && $ekyc->status === 'submitted') {
+            return redirect()->route('ekyc.step2');
+        }
         $request->validate([
             'nama' => 'required|string|max:100',
             'nik' => 'required|string|max:20',
@@ -57,6 +66,12 @@ class EkycController extends Controller
 
     public function storeStep2(Request $request)
     {
+        $ekyc = EkycRegistration::where('user_id', Auth::id())->first();
+        // redirect tanpa simpan & update
+        if ($ekyc && $ekyc->status === 'submitted') {
+            return redirect()->route('ekyc.step3');
+        }
+
         $validated = $request->validate([
             'file_ktp' => 'nullable|image|mimes:jpg, jpeg,png|max:2048',
             'file_selfie' => 'nullable|image|mimes:jpg, jpeg,png|max:2048'
@@ -77,38 +92,128 @@ class EkycController extends Controller
         return redirect()->route('ekyc.step3')->with('success', 'Step 2 tersimpan');
     }
 
-   public function showStep3()
-{
-    $data = \App\Models\EkycRegistration::where('user_id', Auth::id())->first();
-    return view('ekyc.step3', compact('data'));
-}
-
-public function storeStep3(Request $request)
+    public function showStep3()
     {
+        $data = \App\Models\EkycRegistration::where('user_id', Auth::id())->first();
+        return view('ekyc.step3', compact('data'));
+    }
+
+    public function storeStep3(Request $request)
+        {
+            $data = EkycRegistration::where('user_id', Auth::id())->first();
+            // redirect tanpa simpan & update
+            if ($data && $data->status === 'submitted') {
+                return redirect()->route('ekyc.step4');
+            }
+
+            $request->validate([
+                'asal_sd' => 'nullable|string|max:255',
+                'asal_smp' => 'nullable|string|max:255',
+                'asal_sma' => 'nullable|string|max:255',
+                'file_kk' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+                'file_ijazah' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            ]);
+
+            $data = \App\Models\EkycRegistration::where('user_id', Auth::id())->first();
+
+            $data->asal_sd = $request->asal_sd;
+            $data->asal_smp = $request->asal_smp;
+            $data->asal_sma = $request->asal_sma;
+
+            if ($request->hasFile('file_kk')) {
+                $data->file_kk = $request->file('file_kk')->store('ekyc', 'public');
+            }
+
+            if ($request->hasFile('file_ijazah')) {
+                $data->file_ijazah = $request->file('file_ijazah')->store('ekyc', 'public');
+            }
+
+            $data->save();
+            return redirect()->route('ekyc.step4')->with('success', 'Step 3 Tersimpan!');
+        }
+
+    public function showStep4()
+    {
+        $data = \App\Models\EkycRegistration::where('user_id',Auth::id())->first();
+
+        // Ambil semua data alamat via model
+        $alamatList = MasterAlamat::all();
+
+        // Ambil provinsi unik untuk dropdown pertama
+        $data = EkycRegistration::where('user_id', Auth::id())->first();
+        $provinsiList = MasterAlamat::select('provinsi')->distinct()->pluck('provinsi');
+        $kotaList = [];
+        $kecamatanList = [];
+
+        if ($data && $data->provinsi) {
+            $kotaList = MasterAlamat::where('provinsi', $data->provinsi)
+                        ->select('kota')->distinct()->pluck('kota');
+        }
+
+        if ($data && $data->kota) {
+            $kecamatanList = MasterAlamat::where('kota', $data->kota)
+                        ->select('kecamatan')->distinct()->pluck('kecamatan');
+        }
+
+        return view('ekyc.step4', compact('data', 'alamatList', 'provinsiList', 'kotaList', 'kecamatanList'));
+    }
+
+    public function storeStep4(Request $request)
+    {
+        $data = EkycRegistration::where('user_id', Auth::id())->first();
+        // redirect tanpa simpan & update
+        if ($data && $data->status === 'submitted') {
+            return redirect()->route('ekyc.step5');
+        }
+
         $request->validate([
-            'asal_sd' => 'nullable|string|max:255',
-            'asal_smp' => 'nullable|string|max:255',
-            'asal_sma' => 'nullable|string|max:255',
-            'file_kk' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
-            'file_ijazah' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
+            'alamatDomisili' => 'nullable|string|max:255',
+            'provinsi'       => 'nullable|string|max:100',
+            'kota'           => 'nullable|string|max:100',
+            'kecamatan'      => 'nullable|string|max:100',
+            'kode_pos'       => 'nullable|string|max:10',
+            'nama_ibu' => 'nullable|string|max:100',
+            'referensi' => 'nullable|string|max:100',
         ]);
 
+        // Ambil data eKYC milik user login
         $data = \App\Models\EkycRegistration::where('user_id', Auth::id())->first();
 
-        $data->asal_sd = $request->asal_sd;
-        $data->asal_smp = $request->asal_smp;
-        $data->asal_sma = $request->asal_sma;
-
-        if ($request->hasFile('file_kk')) {
-            $data->file_kk = $request->file('file_kk')->store('ekyc', 'public');
+        if (!$data) {
+            return redirect()->route('ekyc.step4')->with('error', 'Data eKYC tidak ditemukan');
         }
 
-        if ($request->hasFile('file_ijazah')) {
-            $data->file_ijazah = $request->file('file_ijazah')->store('ekyc', 'public');
-        }
-
+        // Simpan data alamat & informasi pendaftaran
+        $data->alamatDomisili   = $request->alamatDomisili;
+        $data->provinsi         = $request->provinsi;
+        $data->kota             = $request->kota;
+        $data->kecamatan        = $request->kecamatan;
+        $data->kode_pos         = $request->kode_pos;
+        $data->nama_ibu         = $request->nama_ibu;
+        $data->referensi        = $request->referensi;
         $data->save();
 
-        return redirect()->route('ekyc.step3')->with('success', 'Data pendidikan berhasil disimpan');
+        // return redirect()->route('ekyc.step4')->with('success', 'Data alamat dan informasi berhasil disimpan');
+
+        $data->status = 'submitted';
+        $data->save();
+
+        // Arahkan kehalaman sukses step 5
+        return redirect()->route('ekyc.step5')->with('success', 'Registrasi eKYC telah selesai!');
     }
+
+        public function step5(Request $request)
+        {
+            $data = \App\Models\EkycRegistration::where('user_id', Auth::id())->first();
+            if (!$data) {
+                return redirect()->route('ekyc.step1')->with('Error', 'Data eKYC tidak ditemukan!');
+            }
+
+            // pastikan hanya user dengan status selesai yang bisa melihat halaman ini
+            if ($data->status !== 'submitted') {
+                return redirect()->route('ekyc.step4')->with('error', 'Lengkapi data terlebih dahulu sebelum menyelesaikan eKYC');
+            }
+
+            return view('ekyc.step5', compact('data'));
+        }
 }
