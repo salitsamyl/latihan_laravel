@@ -70,26 +70,26 @@
             {{-- Nama Ibu Kandung --}}
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">Nama Ibu Kandung</label>
-                <input type="text" name="nama_ibu_kandung"
-                    value="{{ old('nama_ibu_kandung', $data->nama_ibu_kandung) }}"
+                <input type="text" name="nama_ibu"
+                    value="{{ old('nama_ibu', $data->nama_ibu) }}"
                     class="mt-1 block w-full border-gray-300 rounded-md">
             </div>
 
             {{-- Referensi Sumber Informasi --}}
             <div class="mb-6">
                 <label class="block text-sm font-medium text-gray-700">Sumber Informasi Pendaftaran</label>
-                <select name="referensi_sumber" class="mt-1 block w-full border-gray-300 rounded-md">
+                <select name="referensi" class="mt-1 block w-full border-gray-300 rounded-md">
                     <option value="">-- Pilih Sumber --</option>
                     <option value="Sosial Media"
-                        {{ old('referensi_sumber', $data->referensi_sumber) == 'Sosial Media' ? 'selected' : '' }}>
+                        {{ old('referensi', $data->referensi) == 'Sosial Media' ? 'selected' : '' }}>
                         Sosial Media
                     </option>
                     <option value="Teman"
-                        {{ old('referensi_sumber', $data->referensi_sumber) == 'Teman' ? 'selected' : '' }}>
+                        {{ old('referensi', $data->referensi) == 'Teman' ? 'selected' : '' }}>
                         Teman
                     </option>
                     <option value="Langsung dari Kampus"
-                        {{ old('referensi_sumber', $data->referensi_sumber) == 'Langsung dari Kampus' ? 'selected' : '' }}>
+                        {{ old('referensi', $data->referensi) == 'Langsung dari Kampus' ? 'selected' : '' }}>
                         Langsung dari Kampus
                     </option>
                 </select>

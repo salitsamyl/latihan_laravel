@@ -35,16 +35,22 @@ class AuthenticatedSessionController extends Controller
         }
 
         // Ambil data eKYC milik user yang login
-        $ekyc = \App\Models\EkycRegistration::where('user_id',Auth::user())->first();
+        $ekyc = \App\Models\EkycRegistration::where('user_id', Auth::id())->first();
 
-        if ($ekyc && $ekyc->status === 'submitted') {
-            // Jika eKYC sudah selesai
-            return redirect()->route('ekyc.step5');
-        } else {
-            // Jika belum ada atau belum selesai
-            return redirect()->route('ekyc.step1');
+        // 🔹 Tambahan untuk TUGAS 2
+        if ($ekyc) {
+            if (in_array($ekyc->status, ['accepted', 'rejected'])) {
+                // Jika sudah diverifikasi (Accepted / Rejected)
+                return redirect()->route('ekyc.status');
+            } elseif ($ekyc->status == 'submitted') {
+                // Jika eKYC sudah selesai tapi belum diverifikasi
+                return redirect()->route('ekyc.step5');
+            }
+        }
+
+        // Jika belum ada atau belum selesai
+        return redirect()->route('ekyc.step1');
     }
-}
 
     /**
      * Destroy an authenticated session.

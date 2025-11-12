@@ -216,4 +216,12 @@ class EkycController extends Controller
 
             return view('ekyc.step5', compact('data'));
         }
+
+        public function status()
+        {
+            $user = Auth::user();
+            $ekyc = \App\Models\EkycRegistration::where('user_id', $user->id)->first();
+            return view('ekyc.status', compact('ekyc'));
+        }
 }
+

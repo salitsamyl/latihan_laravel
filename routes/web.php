@@ -105,6 +105,9 @@ Route::middleware('auth')->group(function () {
  // EKYC step 5
     Route::get('/ekyc/step5', [EkycController::class, 'step5'])->name('ekyc.step5');
 
+        Route::get('status', [App\Http\Controllers\EkycController::class, 'status'])->name('ekyc.status');
+
+
 });
 
     
