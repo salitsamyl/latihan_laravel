@@ -26,6 +26,16 @@
                             <h3 class="text-lg font-semibold mb-2">❌ Maaf!</h3>
                             <p>Registrasi eKYC kamu telah <strong>DITOLAK</strong> oleh admin.</p>
                             <p class="mt-2 text-sm text-red-600">Silakan hubungi admin atau lakukan registrasi ulang.</p>
+
+                            <div class="flex justify-center gap-4 mt-6">
+                                <a href="{{ route('ekyc.step1') }}"
+                                    class="inline-flex items-center px-5 py-2 bg-red-600 border border-transparent rounded-md
+                                    font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700
+                                    focus:bg-red-700 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-indigo-500
+                                    focus:ring-offset-2 transition ease-in-out duration-150">
+                                    Registrasi Ulang!
+                                </a>
+                            </div>
                         </div>
 
                     @else
@@ -35,16 +45,8 @@
                         </div>
                     @endif
 
-                    {{-- Tombol --}}
-                    <div class="flex justify-center gap-4 mt-6">
-                        <a href="{{ route('ekyc.step1') }}"
-                            class="inline-flex items-center px-5 py-2 bg-blue-600 border border-transparent rounded-md
-                            font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700
-                            focus:bg-blue-700 active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-indigo-500
-                            focus:ring-offset-2 transition ease-in-out duration-150">
-                            Registrasi Ulang!
-                        </a>
-
+                    {{-- Tombol Dashboard selalu muncul --}}
+                    <div class="flex justify-center mt-6">
                         <a href="{{ route('dashboard') }}"
                             class="inline-flex items-center px-5 py-2 bg-green-600 border border-transparent rounded-md
                             font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700
